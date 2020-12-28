@@ -59,8 +59,8 @@ def init_logger():
 
 if __name__ == '__main__':
     init_logger()
-    year: int = 2020
-    month: int = 11
+    year: int = 2017
+    month: int = 4
     data_manager = Manager(year, month)
     games = get_n_games_with_filter(data_manager, num_games_needed=500, filter_f=f.OR(
             f.AND(
