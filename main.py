@@ -1,31 +1,10 @@
 import logging.config
-from typing import Callable
 import os
 
-from models.games import Games
-from lichess_parser import parse_file_gen
 import filters.filter_utils as f
 import filters.game_filters as gf
 from data_manager.manager import Manager
-
-
-def get_n_games_with_filter(manager: Manager, num_games_needed: int, filter_f: Callable):
-    filtered_games = Games()
-    with manager as fl:
-        num_games = 0
-        for i, game in enumerate(parse_file_gen(fl)):
-            if num_games == num_games_needed:
-                break
-            if filter_f(game):
-                filtered_games.add_game(game)
-                num_games += 1
-            if i % 1000 == 0 and i != 0:
-                print("at game {}, filtered {} ({}%) games successfully".format(
-                    i,
-                    len(filtered_games),
-                    round(100 * len(filtered_games) / (i + 1), 2)
-                ))
-    return filtered_games
+from game_fetcher.get_with_filter import get_n_games_with_filter
 
 
 def init_logger():
@@ -59,8 +38,8 @@ def init_logger():
 
 if __name__ == '__main__':
     init_logger()
-    year: int = 2017
-    month: int = 4
+    year: int = 2014
+    month: int = 1
     data_manager = Manager(year, month)
     games = get_n_games_with_filter(data_manager, num_games_needed=500, filter_f=f.OR(
             f.AND(
@@ -93,4 +72,3 @@ if __name__ == '__main__':
             )
           )
     )
-    print(games)
