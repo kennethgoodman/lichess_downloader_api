@@ -1,7 +1,10 @@
 from typing import List, Union, TextIO
 import os
 import datetime
+import logging
 
+# define top level module logger
+logger = logging.getLogger(__name__)
 
 class ReadManager:
     def __init__(self, year: int, month: int):
@@ -18,9 +21,13 @@ class ReadManager:
         return self.get_path() is not None
 
     def get_path(self) -> Union[str, None]:
-        for fl in self.get_file_list():
-            if self.dt.strftime("%Y-%m") in fl:
-                return os.path.join('data', fl)
+        try:
+            for fl in self.get_file_list():
+                if self.dt.strftime("%Y-%m") in fl:
+                    return os.path.join('data', fl)
+        except FileNotFoundError:
+            logger.warning("couldn't find file list folder")
+            return None
         return None
 
     def __enter__(self):
