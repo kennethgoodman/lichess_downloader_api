@@ -104,7 +104,7 @@ def inc_download_and_unzip(year: int, month: int):
                         dec.decompress(unused)
                     f.write(rtn)
     if dec.unused_data != b'':
-        logger.warn(f"some unused data not decompress: len = {len(dec.unused_data)}")
+        logger.warning(f"some unused data not decompress: len = {len(dec.unused_data)}")
     logger.info(f"decompress done")
     assert expected_checksum == hs.hexdigest()
     end_time = time.time()
