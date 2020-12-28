@@ -134,3 +134,6 @@ raw_data/
 
 # logs
 logs/
+
+# Pycharm
+.idea
