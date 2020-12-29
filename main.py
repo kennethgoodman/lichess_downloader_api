@@ -47,7 +47,7 @@ if __name__ == '__main__':
     year: int = 2014
     month: int = 1
     data_manager = Manager(year, month)
-    games = get_n_games_with_filter(data_manager, num_games_needed=500, filter_f=f.OR(
+    games = get_n_games_with_filter(data_manager, num_games_needed=5, filter_f=f.OR(
             f.AND(
                 # 2700+ with any time control
                 gf.get_filter_by_avg_rating(min_rating=2700),
@@ -78,3 +78,4 @@ if __name__ == '__main__':
             )
           )
     )
+    print(games)

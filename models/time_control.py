@@ -17,7 +17,13 @@ class TimeControl:
         )
 
     def __repr__(self):
-        return self._base_time_control if self._base_time_control != "-" else "Correspondence"
+        if self._base_time_control == "-":
+            return "Correspondence"
+        if self.base % 60 == 0:
+            base = self.base // 60
+        else:
+            base = self.base / 60
+        return f"{base}+{self.increment}"
 
     def __eq__(self, other):
         return self._base_time_control == other._base_time_control
