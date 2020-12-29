@@ -1,7 +1,7 @@
 from typing import Callable
 import logging
 
-from parser.lichess_parser import parse_file_gen
+from lichess_parser.lichess_parser import parse_file_gen
 from data_manager.manager import Manager
 from models.games import Games
 
