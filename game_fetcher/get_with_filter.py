@@ -3,13 +3,13 @@ import logging
 
 from parser.lichess_parser import parse_file_gen
 from data_manager.manager import Manager
-
+from models.games import Games
 
 logger = logging.getLogger(__name__)
 
 
 def get_n_games_with_filter(manager: Manager, num_games_needed: int, filter_f: Callable):
-    filtered_games = []
+    filtered_games = Games()
     num_errors, num_games = 0, 0
     with manager as fl:
         for i, game in enumerate(parse_file_gen(fl)):
@@ -19,7 +19,7 @@ def get_n_games_with_filter(manager: Manager, num_games_needed: int, filter_f: C
             if num_games == num_games_needed:
                 break
             if filter_f(game):
-                filtered_games.append(game)
+                filtered_games.add_game(game)
                 num_games += 1
             if i % 1000 == 0 and i != 0:
                 logger.info(f"at game {i}, filtered {len(filtered_games)} "
