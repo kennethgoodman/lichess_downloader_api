@@ -32,3 +32,7 @@ def get_time_control(game: chess.pgn.Game) -> TimeControl:
     return TimeControl(
         time_control_header=game.headers["TimeControl"]
     )
+
+
+def get_game_id(game: chess.pgn.Game) -> str:
+    return game.headers.get('Site').replace('"', '').replace('https://lichess.org/', '')
