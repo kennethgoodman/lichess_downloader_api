@@ -10,7 +10,7 @@ def get_result(game: chess.pgn.Game) -> str:
 
 
 def _get_elo(game: chess.pgn.Game, key: str) -> int:
-    elo = game.headers.get("WhiteElo")
+    elo = game.headers.get(key)
     if elo == "?" or elo is None:
         return DEFAULT_ELO_RATING
     return int(elo)

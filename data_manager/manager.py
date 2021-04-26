@@ -6,5 +6,6 @@ class Manager(ReadManager):
     def __init__(self, year: int, month: int):
         super().__init__(year, month)
         if not self.has_data():
-            inc_download_and_unzip(year, month)
-            # download_data(year, month)
+            gen = inc_download_and_unzip(year, month)
+            for _ in gen:
+                pass

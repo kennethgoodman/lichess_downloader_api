@@ -78,7 +78,7 @@ def get_checksum(path):
     return hs.hexdigest()
 
 
-def inc_download_and_unzip(year: int, month: int):
+def inc_download_and_unzip(year: int, month: int, save_file: bool=True):
     start_time = time.time()
     expected_checksum, filename = get_checksum_and_filename(year, month)
     if not os.path.exists("data"):
@@ -93,6 +93,7 @@ def inc_download_and_unzip(year: int, month: int):
         r.raise_for_status()
         logger.info(f"request successful! downloading data into file using: incremental method")
         dec = bz2.BZ2Decompressor()
+        chunks_written = 0
         with open(new_data_filepath, 'wb') as f:
             for chunk in r.iter_content(chunk_size=8192):
                 hs.update(chunk)
@@ -102,7 +103,12 @@ def inc_download_and_unzip(year: int, month: int):
                     dec = bz2.BZ2Decompressor()
                     if unused:
                         dec.decompress(unused)
-                    f.write(rtn)
+                    if save_file:
+                        f.write(rtn)
+                    yield rtn
+                    chunks_written += 1
+                    if chunks_written % 100 == 0:
+                        logger.info(f"written {chunks_written} chunks so far")
     if dec.unused_data != b'':
         logger.warning(f"some unused data not decompress: len = {len(dec.unused_data)}")
     logger.info(f"decompress done")

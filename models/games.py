@@ -43,4 +43,4 @@ class Games:
         del self.games[game_id]
 
     def __iter__(self):
-        return iter(self.games)
+        return iter(self.games.items())
